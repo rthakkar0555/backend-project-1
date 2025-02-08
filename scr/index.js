@@ -10,7 +10,7 @@ const PORT=process.env.PORT||8000
 // datat base connection
 connectDb()
 .then(()=>{
-  app.on("error is here:::",(error)=>{
+  app.on("error",(error)=>{
     console.log("app can not talk to database || error shows up in main index file",error);
     throw error 
   }) 
