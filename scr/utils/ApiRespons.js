@@ -10,3 +10,5 @@ class ApiRespons {
     this.success=satatsCode < 400
   }
 }
+
+export default ApiRespons
