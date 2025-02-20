@@ -6,9 +6,7 @@ import ApiRespons from "../utils/ApiRespons.js"
 
 export const registerUser = asyncHandler(async (req,res)=>{
   //to user that server is connected
-  res.status(200).json({
-    message:"done"
-  })
+
   // fatching the data
   const {username,email,fullName,password}=req.body
   console.log("req body info",req.body)
@@ -18,11 +16,11 @@ export const registerUser = asyncHandler(async (req,res)=>{
   ) throw new ApiError(404,"data field is empty")
   
   // check if user alredy hai ya nahi
-  const existeUser=User.findOne({
+  const existeUser=await User.findOne({
     $or:[{username},{email}]
   });
  console.log(existeUser)
-  if(!existeUser) throw new ApiError(409,"user alredy exist")
+  if(existeUser) throw new ApiError(409,"user alredy exist")
 
   // handling file validation
   console.log("req fiels",req.files) 
@@ -36,28 +34,28 @@ export const registerUser = asyncHandler(async (req,res)=>{
   const avatarCloudinaryImg=await uploadONCloudinary(avatarLocalImagePath)
   const coverCloudinaryImg=await uploadONCloudinary(coverLocalImagePath)
 
-  if(avatar) new ApiError(400,"avatar file is reqired")
+  if(avatarCloudinaryImg) new ApiError(500,"something went worng")
   console.log(coverCloudinaryImg)
   
   //now data is fatch and we are making entry to database
 
-  const userDBrespoms= await User.create({
+  const userDBrespons= await User.create({
     fullName,
     avatar: avatarCloudinaryImg.url,
     coverImage: coverCloudinaryImg?.url||"",
     email,
     password,
     username:username.toLowerCase()
-  })
-   // now we are giving the res to user that what we save but hiding password and refrestokan we are alos chaking if user is saved or not 
+  });
+   // now we are giving the res to user that what we save but hiding password and refrestokan we are alos chaking //if user is saved or not 
 
-  const createdUser=await User.findByID(userDBrespoms._id).select("-password -refreshToken")
+  const createdUser= await User.findById(userDBrespons._id).select("-password -refreshToken")
 
   if(!createdUser) throw new ApiError(500,"someting went wrong we cant connect to user")
 
   // now we are giving respons
   return res.status(201).json(
-    new ApiRespons(200,"createdUser","user registerd successfully")
+    new ApiRespons(201,createdUser,"user registerd successfully")
   )
 });
 
