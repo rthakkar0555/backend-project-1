@@ -99,6 +99,9 @@ const loginUser = asyncHandler(async (req, res) => {
 
   console.log(user)
   
+  const isPasswordCorrect=await user.isPasswordCorrect(password)
+
+  if(!isPasswordCorrect) throw new ApiError(401,"invalid credantial")
   const {refreshToken,accessToken}=await generatAccessAndRefresstoken(user)
   const option={
     httpOnly:true,
