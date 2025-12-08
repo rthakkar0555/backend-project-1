@@ -27,5 +27,7 @@ app.use(cookieParser())
 import userrouter from "./routes/user.routes.js"
 
 app.use("/api/v1/users",userrouter)
-
+app.get("/api/v1/helth",async(req,res)=>{
+  res.send("ok")
+})
 export default app

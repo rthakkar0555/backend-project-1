@@ -40,7 +40,7 @@ const userSchema = new Schema(
       type: String,
       require: [true, "password is required"],
     },
-    refreshtoken: {
+    refreshToken: {
       type: String,
     },
   },
@@ -69,7 +69,7 @@ userSchema.methods.generateAccessToken = function () {
 )
 };
 
-userSchema.methods.generateAccessToken = function () {
+userSchema.methods.generateRefreshToken = function () {
     return jwt.sign({
         _id : this._id,
         email:this.email,

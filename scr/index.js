@@ -2,10 +2,9 @@ import dotenv from "dotenv"
 import connectDb from "./db/index.js"
 import app from "./app.js"
 
-dotenv.config({
-  path:"./.env"
-})
- 
+dotenv.config()
+
+// console.log(process.env)
 const PORT=process.env.PORT||3000
 // datat base connection
 connectDb()
