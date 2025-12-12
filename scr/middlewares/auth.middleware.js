@@ -12,7 +12,7 @@ const authMiddlerware = asyncHandler(async(req,res,next)=>{
     const user=await User.findById(decode._id)
 
     if(!user) throw new ApiError(401,"invalid accesstoken")
-    console.log(user)
+    //console.log(user)
     
     req.user=user
 
